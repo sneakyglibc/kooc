@@ -1,0 +1,38 @@
+<.root type = object>
+	<aset type = set>
+		<'T'/>
+		<'U'/>
+		<'X'/>
+		<'Z'/>
+	</aset>
+	<ablob bytes = b'\xff\xaa\x06Th -}'/>
+	<ls type = list>
+		<.idx __value = 0 int = 1/>
+		<.idx __value = 1 float = 2.0/>
+		<.idx __value = 2 str = 'titi'/>
+		<.idx __value = 3 bool = True/>
+		<.idx __value = 4 type = list>
+			<.idx __value = 0 int = 2/>
+			<.idx __value = 1 int = 3/>
+			<.idx __value = 2 int = 4/>
+			<.idx __value = 3 type = list>
+				<.idx __value = 0 int = 3/>
+				<.idx __value = 1 type = list>
+					<.idx __value = 0 int = 3/>
+					<.idx __value = 1 int = 4/>
+				</.idx __value = 1>
+			</.idx __value = 3>
+			<.idx __value = 4 int = 5/>
+		</.idx __value = 4>
+	</ls>
+	<_bool bool = True/>
+	<dct type = dict>
+		<.idx __key = 'g' int = 1/>
+		<.idx __key = 'y' int = 2/>
+		<.idx __key = 'koko' type = set>
+			<'T'/>
+			<'D'/>
+			<'C'/>
+		</.idx __key = 'koko'>
+	</dct>
+</.root>

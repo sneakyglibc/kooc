@@ -1,0 +1,13 @@
+const int a;
+auto double b;
+unsigned short zz1;
+unsigned long zz2;
+unsigned long long zz3;
+int *pi;
+static int aaa;
+extern short bbbb;
+void **buf;
+float bigbuffer[42][32][41];
+char * const toto;
+volatile char *volatile*const* theStr;
+typedef double GG;
