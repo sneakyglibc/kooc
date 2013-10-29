@@ -20,23 +20,36 @@ class   Kooc(Grammar, Declaration):
             [
                 "":current_block
                 #new_root(_, current_block)
-                [
-                  Declaration.declaration
-                ]*
+                [ [Declaration.declaration] | [import:imp #add_import(_, imp)] ]*
             ]
             Base.eof
         ;
-    """
+        import ::= ["@import" | "#include"] '"'[name_import]+:ret '"' #rule_import(_, ret);
+        name_import ::= ['a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '/' |  '_'] ;
+"""
 
 @meta.hook(Kooc)
-def printvalu(self, ast):
-    print(ast)
+def add_import(self, ast, ret):
+    ast.node.body.extend(ret.nimport.body)
+    return True
 
-cparse = Declaration()
-ast = cparse.parse("int a;")
-print (ast.to_c())
+@meta.hook(Kooc)
+def rule_import(self, ast, ret):
+    parse = Kooc()
+    ast.nimport = parse.parse_file(ret.value).node
+    return True
+
+@meta.hook(Kooc)
+def printvalue(self, ast):
+    print(ast.value)
+    return True
+
+@meta.hook(Kooc)
+def printnode(self, ast):
+    print(ast.node)
+    return True
 
 cparse = Kooc()
-ast = cparse.parse("int a;")
+ast = cparse.parse("int a;int b; @import \"module.kh\"")
 print (ast.node.to_c())
 
