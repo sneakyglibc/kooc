@@ -2,11 +2,11 @@
 {
   int c;
   static int CX;
-  int func(int c , char * sd);
   struct c
  {
  int a;
  };
+  int func(int c , char * sd, struct c);
 }
 
 int dd;
