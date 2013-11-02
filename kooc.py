@@ -9,19 +9,23 @@ from cnorm.parsing.expression import Idset
 from weakref import ref
 import sys
 from cnorm.parsing.declaration import Declaration
-from module_import import Import
 from cnorm.passes import to_c
+from module_import import Import
+from module import Module
 
-class   Kooc(Grammar, Declaration, Import):
+class   Kooc(Grammar, Declaration, Import, Module):
 
-    entry = "translation_unit"
+    entry = "kooc"
     grammar = """
-        translation_unit ::=
+        kooc ::=
             @ignore("C/C++")
             [
                 "":current_block
                 #new_root(_, current_block)
-                [ [Declaration.declaration] | [Import.import:imp #add_import(_, imp)] ]*
+                [ [Declaration.declaration] |
+                  [Import.import:imp #add_import(_, imp)] |
+                  [Module.module:mod #add_module(_, mod)]
+                ]*
             ]
             Base.eof
         ;
@@ -29,7 +33,14 @@ class   Kooc(Grammar, Declaration, Import):
 
 @meta.hook(Kooc)
 def add_import(self, ast, ret):
-    ast.node.body.extend(ret.nimport.body)
+    if ret.nimport != None:
+        ast.node.body.extend(ret.nimport.body)
+    return True
+
+@meta.hook(Kooc)
+def add_module(self, ast, ret):
+    print(ret.node.body)
+    ast.node.body.extend(ret.node.body)
     return True
 
 @meta.hook(Kooc)
