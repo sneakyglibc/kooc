@@ -9,9 +9,10 @@ from cnorm.parsing.expression import Idset
 from weakref import ref
 import sys
 from cnorm.parsing.declaration import Declaration
+from module_import import Import
 from cnorm.passes import to_c
 
-class   Kooc(Grammar, Declaration):
+class   Kooc(Grammar, Declaration, Import):
 
     entry = "translation_unit"
     grammar = """
@@ -20,23 +21,15 @@ class   Kooc(Grammar, Declaration):
             [
                 "":current_block
                 #new_root(_, current_block)
-                [ [Declaration.declaration] | [import:imp #add_import(_, imp)] ]*
+                [ [Declaration.declaration] | [Import.import:imp #add_import(_, imp)] ]*
             ]
             Base.eof
         ;
-        import ::= ["@import" | "#include"] '"'[name_import]+:ret '"' #rule_import(_, ret);
-        name_import ::= ['a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '/' |  '_'] ;
 """
 
 @meta.hook(Kooc)
 def add_import(self, ast, ret):
     ast.node.body.extend(ret.nimport.body)
-    return True
-
-@meta.hook(Kooc)
-def rule_import(self, ast, ret):
-    parse = Kooc()
-    ast.nimport = parse.parse_file(ret.value).node
     return True
 
 @meta.hook(Kooc)
@@ -48,8 +41,4 @@ def printvalue(self, ast):
 def printnode(self, ast):
     print(ast.node)
     return True
-
-cparse = Kooc()
-ast = cparse.parse("int a;int b; @import \"module.kh\"")
-print (ast.node.to_c())
 
