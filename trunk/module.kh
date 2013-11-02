@@ -1,2 +1,13 @@
-int c;
-int b;
+@module name
+{
+  int c;
+  static int CX;
+  int func(int c , char * sd);
+  struct c
+ {
+ int a;
+ };
+}
+
+int dd;
+int cc;

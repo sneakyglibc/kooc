@@ -1,0 +1,4 @@
+@import "module.kh"
+
+int a;
+int b;

@@ -1,5 +1,5 @@
 from kooc import Kooc
 
 cparse = Kooc()
-ast = cparse.parse("int a;int b; @import \"module.kh\"")
+ast = cparse.parse_file("test.kc")
 print (ast.node.to_c())
