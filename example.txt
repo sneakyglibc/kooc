@@ -1,0 +1,87 @@
+/* ----- MODULE ----- */
+@module monModule
+{
+    // Code (KOOC et C)
+}
+
+@module monModule
+{
+    int add(int a, int b);
+    float add(float a, float b);
+}
+
+@module monModule
+{
+    int a;
+    void maFonction(char, int);
+}
+
+/* ----- Class ----- */
+@class Nom_class
+{
+    @member
+    {
+        int a; // variable membre
+        void function(); // fonction membre
+    }
+    int b; // variable non membre
+    void function_non_membre(); // fonction non membre
+    @member int c; // variable membre
+    @member void my_function; // fonction membre
+    void func(Nom_class *); // fonction membre
+}
+
+@class maClasse2
+{
+    maClasse2* alloc(); // Allocation mémoire
+    maClasse2* new(); // Constructeur par défaut
+    @member void init(); // Initialiseur par défaut
+    @member void clean(); // Nettoyeur par défaut
+    @member void delete(); // Destructeur par défaut
+}
+
+/* ----- Appel de variable ----- */
+[nomModule.nomVariable] = 42;
+[nomDuModule.nomDeLaVariable]
+/* ----- Appel de variable membre ----- */
+[ptrObjet.variableMembre];
+[&objet.variableMembre];
+/* ----- Appel de variable non-membre ----- */
+[maClasse.maVariable]
+/* ----- Appel de fonction avec 2 param ----- */
+[nomClasse nomFonction :10 :20];
+[nomDuModule nomDeLaFonction :Parametre1 :parametre2]
+/* ----- Appel de fonction membre de class avec 2 param ----- */
+[ptrObjet fonctionMembre :parametre1]
+[&objet fonctionMembre :parametre1]
+/* ----- Appel de fonction non-membre de class avec 2 param ----- */
+[maClasse maFonction :parametre1 :parametre2]
+/* ----- Déclaration d'une class ----- */
+maClasse            ptrObjet = [maClasse new];
+maClasse            objet;
+
+[objet init];
+[objet clean];
+[objet delete];
+
+
+int main()
+{
+    maClasse        *objet;
+    [maClasse.variable] = 0;    // variable non-membre
+    [maClasse fonction];        // appel fonction non-membre
+    [objet new];                // Initialisation de objet
+    [objet.variable] = 0;       // initialisation variable membre
+
+    /* variable membre = retour fonction membre */
+    [objet.var] = [objet fonction :42]
+}
+
+/* Appel variable membre nbVitre de camion */
+[self.nbVitre];
+/* Appel fonction membre demarrer de camion */
+[self demarrer];
+/* Appel fonction membre manger de vehicule */
+[super demarrer];
+/* Appel variable membre nbRoue de vehicule */
+[super.nbRoue];
