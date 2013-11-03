@@ -1,6 +1,2 @@
 @import "module.kh"
 
-typedef int fofo;
-int a;
-int b;
-fofo b;

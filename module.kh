@@ -1,13 +1,7 @@
 @module name
 {
-  int c;
-  static int CX;
-  struct c
- {
- int a;
- };
-  int func(int c , char * sd, struct c);
+	const char* lol;
+	unsigned int lol;
+	char* const lol;
 }
 
-int dd;
-int cc;
