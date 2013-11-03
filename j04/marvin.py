@@ -8,6 +8,11 @@ Specifiers = ['AUTO', 'STRUCT', 'UNION', 'ENUM', 'a la jack', 'a la super-jack',
 Signs = ['AUTO', 'SIGNED', 'positif ou nul']
 Type = {'int':'un entier', 'double':'un floattant', 'float':'un floattant', 'void':'rien', 'char':'un caractere'}
 
+# Storages = meta.enum('AUTO', 'REGISTER', 'TYPEDEF', 'STATIC', 'EXTERN', 'INLINE', 'VIRTUAL', 'EXPLICIT')
+# Qualifiers = meta.enum('AUTO', 'CONST', 'VOLATILE', 'RESTRICT')
+# Specifiers = meta.enum('AUTO', 'STRUCT', 'UNION', 'ENUM', 'LONG',
+                       # 'LONGLONG', 'SHORT')
+# Signs = meta.enum('AUTO', 'SIGNED', 'UNSIGNED')
 
 class   data:
     def __init__(self):
@@ -34,7 +39,7 @@ def print_iden(llist, name, literal, node):
     if node.specifier != 0:
         res += " " + Specifiers[node.specifier]
     if node.sign == 2:
-        res += " " + Signs[node.sign] 
+        res += " " + Signs[node.sign]
     return res
 
 def print_l(llist, name, literal, node, p):
