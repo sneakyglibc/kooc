@@ -12,11 +12,16 @@ from cnorm.parsing.declaration import Declaration
 from cnorm.passes import to_c
 from module_import import Import
 from module import Module
+from call import Call
 from implementation import Implementation
 import dumbXml
 import mangle
 
-class   Kooc(Grammar, Declaration, Import, Module, Implementation):
+mlist = []
+ilist = []
+
+
+class   Kooc(Grammar, Call, Declaration, Import, Module, Implementation):
 
     entry = "kooc"
     grammar = """
@@ -38,7 +43,7 @@ class   Kooc(Grammar, Declaration, Import, Module, Implementation):
 @meta.hook(Kooc)
 def add_import(self, ast, ret):
     if ret.nimport != None:
-        ast.node.body.extend(ret.nimport.body)
+        ast.node.body.extend(ret.nimport.node.body)
     return True
 
 @meta.hook(Kooc)
@@ -50,10 +55,12 @@ def add_imp(self, ast, ret):
 
 @meta.hook(Kooc)
 def add_module(self, ast, ret):
-    print(ret.node.to_dxml())
+#    print(ret.node.to_dxml())
     for item in ret.node.body:
         mangle.mangle(item, ret.mname, "M")
     ast.node.body.extend(ret.node.body)
+    global mlist
+    mlist.append(ret.mname)
     return True
 
 @meta.hook(Kooc)
