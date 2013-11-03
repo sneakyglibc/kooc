@@ -12,14 +12,14 @@ class   Import(Grammar):
 @meta.hook(Import)
 def rule_import(self, ast, ret):
     from kooc import Kooc
-    if not hasattr(self, "lfile"):
-        self.lfile = []
+    from kooc import ilist
     tmp = ret.value.split("/")[-1]
-    if tmp in self.lfile:
+    global ilist
+    if tmp in ilist:
         print("Warning : recursive inclusion ", tmp)
-        ast.nimport = None
+        ast.nimportx = None
     else:
-        self.lfile.append(tmp)
+        ilist.append(tmp)
         parse = Kooc()
-        ast.nimport = parse.parse_file(ret.value).node
+        ast.nimport = parse.parse_file(ret.value)
     return True

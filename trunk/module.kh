@@ -1,7 +1,21 @@
 @module name
 {
-	const char* lol;
-	unsigned int lol;
-	char* const lol;
+  int c = 4;
+  static int CX;
+  struct c
+ {
+ int a;
+ };
+  int func(int c , char * sd, struct c);
 }
 
+  int fun(int c)
+{
+	int a = 42;
+	return a;
+}
+int WW;
+WW = fun(4);
+int dd;
+dd = 4;
+int cc;
