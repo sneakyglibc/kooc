@@ -4,49 +4,31 @@ from cnorm.parsing.declaration import Declaration
 
 class   Call(Grammar, Declaration):
 
-    entry = "expression"
+    entry = "primary_expression"
     grammar =   """
-        unary_expression ::=
-            // CAST
-            '(' type_name:t ')'
-            [
-                // simple cast
-                unary_expression:_
-                |
-                // compound literal
-                initializer_block:_
-            ]
-            #to_cast(_, t)
-            | // SIZEOF
-            Base.id:i #sizeof(i)
-            [
-                '(' type_name:n ')'
-                | Expression.unary_expression:n
-            ]:n
-            #new_sizeof(_, i, n)
-            | Expression.unary_expression:_
-        ;
-
-        // ({}) and __builtin_offsetof
         primary_expression ::=
-            "({"
-                "":current_block
-                #new_blockexpr(_, current_block)
-                [
-                    line_of_code
-                ]*
-            "})"
-            | // TODO: create special node for that
-                "__builtin_offsetof"
-                '(' [type_name ',' postfix_expression]:bof ')'
-                #new_builtoffset(_, bof)
-            |
-            Expression.primary_expression:_
+            '(' expression:expr ')' #new_paren(_, expr)
+            | [Literal.literal | identifier]:_ | call_kooc:_
         ;
-constant_expression ::=
-            conditional_expression:_
+        call_kooc ::=
+                @ignore('null')
+                [
+                 "[" Base.id:mod ["." | " "] Base.id:var "]"
+                ]:call  #add_call(call, mod, var) #new_id(_, call)
         ;
                 """
+
+@meta.hook(Call)
+def add_call(self, call, mod, var):
+    from kooc import mlist
+    global mlist
+    if not mod.value in mlist:
+        print("error no module named", mod.value)
+        return False;
+    for item in mlist[mod.value]:
+        if item[0] == var.value:
+            call.value = item[1]
+    return True
 
 @meta.hook(Call)
 def printv(self, ast):
