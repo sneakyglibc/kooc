@@ -1,6 +1,9 @@
 @import "module.kh"
-
-typedef int fofo;
 int a;
 int b;
-b = 2;
+int main()
+{
+c = 2;
+[name.c] = [name.c];
+
+}

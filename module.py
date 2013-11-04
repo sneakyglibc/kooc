@@ -17,7 +17,7 @@ class   Module(Grammar, Declaration):
             "":local_specifier
             #create_ctype(local_specifier)
             declaration_specifier+:dsp
-            init_declarator:decl #printv(decl)
+            init_declarator:decl
             #not_empty(module_block, dsp, decl)
             #end_decl(module_block, decl)
             [
@@ -62,9 +62,4 @@ class   Module(Grammar, Declaration):
 @meta.hook(Module)
 def add_name(self, ast, name):
     ast.mname = name.value
-    return True
-
-@meta.hook(Module)
-def printv(self, ast):
-    print(ast)
     return True

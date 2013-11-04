@@ -26,7 +26,7 @@ def mangle(decl, name, name_type):
         return mangle_func(decl, name, name_type)
     elif str(type(decl._ctype)) == "<class 'cnorm.nodes.ComposedType'>" :
         return mangle_composed(decl, name, name_type)
-        
+
 def gen_varname(decl):
         return gen_primaryname(decl)
 
@@ -70,7 +70,7 @@ def gen_primaryname(decl):
             nbr += 1
         elif (typ == "<class 'cnorm.nodes.PointerType'>"):
             retdata += "p"
-            nbr += 1            
+            nbr += 1
         elif (typ == "<class 'cnorm.nodes.ArrayType'>"):
             retdata += "t"
             nbr += 1

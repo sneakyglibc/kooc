@@ -17,7 +17,7 @@ def rule_import(self, ast, ret):
     global ilist
     if tmp in ilist:
         print("Warning : recursive inclusion ", tmp)
-        ast.nimportx = None
+        ast.nimport = None
     else:
         ilist.append(tmp)
         parse = Kooc()

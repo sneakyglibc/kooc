@@ -17,7 +17,7 @@ from implementation import Implementation
 import dumbXml
 import mangle
 
-mlist = []
+mlist = {}
 ilist = []
 
 
@@ -56,16 +56,18 @@ def add_imp(self, ast, ret):
 @meta.hook(Kooc)
 def add_module(self, ast, ret):
 #    print(ret.node.to_dxml())
-    for item in ret.node.body:
-        mangle.mangle(item, ret.mname, "M")
-    ast.node.body.extend(ret.node.body)
     global mlist
-    mlist.append(ret.mname)
+    if not ret.mname in mlist:
+        mlist[ret.mname] = []
+    for item in ret.node.body:
+        mlist[ret.mname].append(mangle.mangle(item, ret.mname, "M"))
+    ast.node.body.extend(ret.node.body)
     return True
 
 @meta.hook(Kooc)
-def printvalue(self, ast):
-    print(ast.value)
+def printvalue(self):
+    print(ilist)
+    print(mlist)
     return True
 
 @meta.hook(Kooc)
