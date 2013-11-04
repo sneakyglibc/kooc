@@ -2,7 +2,7 @@ def mangle_primary(decl, name, name_type):
     backup = decl._name
     varname = gen_varname(decl)
     decl._name = "K" + "_" + name_type + "_" + name + "_" + "V" + "_" + varname + "_" + str(decl._name)
-    return [backup, varname, decl._name]
+    return {"name":backup, "type":varname, "mangle":decl._name}
 
 def mangle_func(decl, name, name_type):
     backup = decl._name
@@ -14,13 +14,13 @@ def mangle_func(decl, name, name_type):
         decl._name = "K" + "_" + name_type + "_" + name + "_" + "F" + "_" + varname + "_" + str(len(decl._ctype._params)) + "_" + params + str(decl._name)
     else:
         decl._name = "K" + "_" + name_type + "_" + name + "_" + "F" + "_" + varname  + "_" + str(decl._name)
-    return [backup, varname, decl._name]
+    return {"name":backup, "type":varname, "mangle":decl._name}
 
 def mangle_composed(decl, name, name_type):
     backup = decl._name
     varname = gen_varname(decl)
     decl._name = "K" + "_" + name_type + "_" + name + "_" + "V" + "_" + varname + "_" + str(decl._name)
-    return [backup, varname, decl._name]
+    return {"name":backup, "type":varname, "mangle":decl._name}
 
 def mangle(decl, name, name_type):
     if str(type(decl._ctype)) == "<class 'cnorm.nodes.PrimaryType'>" :
