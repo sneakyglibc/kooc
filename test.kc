@@ -1,14 +1,4 @@
-@import "module.kh"
-int a;
-int c;
-
-int b = 2;
-char b = 4;
-void func(char, int);
-
 int main()
 {
-c = [name.c];
-@!(int)[name.b] = [name.c];
-func(c, func(c, @!(int)[name.b]));
+int b;
 }

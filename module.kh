@@ -1,7 +1,8 @@
 @module name
 {
   int c = 4;
+  char c;
   int b;
   char b;
-  int func(char *, int);
+  int func(int);
 }
