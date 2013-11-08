@@ -1,0 +1,4 @@
+#!/bin/sh
+
+python3.3 kooc.py $*
+exit 0
