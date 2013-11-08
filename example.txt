@@ -40,6 +40,9 @@
     @member void delete(); // Destructeur par défaut
 }
 
+@import "votre_fichier.kh"
+
+
 /* ----- Appel de variable ----- */
 [nomModule.nomVariable] = 42;
 [nomDuModule.nomDeLaVariable]
@@ -50,6 +53,8 @@
 [maClasse.maVariable]
 /* ----- Appel de fonction avec 2 param ----- */
 [nomClasse nomFonction :10 :20];
+[nomClasse nomFonction :(int)10 :(int)20];
+@!(void)[nomClasse nomFonction :(int)10 :(int)20];
 [nomDuModule nomDeLaFonction :Parametre1 :parametre2]
 /* ----- Appel de fonction membre de class avec 2 param ----- */
 [ptrObjet fonctionMembre :parametre1]
