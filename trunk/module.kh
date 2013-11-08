@@ -1,8 +1,8 @@
-@module name
+@module testkooc
 {
-  int c = 4;
+  int c;
   char c;
   int b;
-  char b;
+  char c;
   int func(int);
 }
