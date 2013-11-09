@@ -1,10 +1,10 @@
 def mangle_func_from(module, name_type, func, ftype, arg):
-    ret = str()
     params = ""
     for item in arg:
         params += item + "_"
-    ret = "K" + "_" + name_type + "_" + module + "_" + "F" + "_" + gen_varname(ftype) + "_" + str(len(arg)) + "_" + params + func
-    return ret
+    if not ftype:
+        return "_" + str(len(arg)) + "_" + params + func
+    return "K" + "_" + name_type + "_" + module + "_" + "F" + "_" + gen_varname(ftype) + "_" + str(len(arg)) + "_" + params + func
         
 
 def mangle_primary(decl, name, name_type):
