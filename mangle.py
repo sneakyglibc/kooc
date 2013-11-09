@@ -1,3 +1,12 @@
+def mangle_func_from(module, name_type, func, ftype, arg):
+    ret = str()
+    params = ""
+    for item in arg:
+        params += item + "_"
+    ret = "K" + "_" + name_type + "_" + module + "_" + "F" + "_" + gen_varname(ftype) + "_" + str(len(arg)) + "_" + params + func
+    return ret
+        
+
 def mangle_primary(decl, name, name_type):
     backup = decl._name
     varname = gen_varname(decl)
@@ -87,3 +96,4 @@ def gen_primaryname(decl):
     retdata = recurse(item, 0, "")
     retdata += item._identifier
     return retdata
+
