@@ -90,3 +90,39 @@ int main()
 [super demarrer];
 /* Appel variable membre nbRoue de vehicule */
 [super.nbRoue];
+
+@class MyClass
+{
+	@member
+	{
+		int	a;
+		void	function();
+		void	add(int a, int b);
+	}
+	int	b;
+	void	function_non_membre();
+	@member int c;
+	@member void my_function();
+	void	func(MyClass);
+}
+
+ ----- EN C -----
+
+int MyClass_b;
+void MyClass_function_non_membre();
+void MyClass_func(MyClass c);
+
+
+typedef struct
+{
+	void	(*function)();
+	void	(*add)(int, int);
+	void	(*my_function)();
+}		VTABLE_MyClass;
+
+typedef struct  MyClass
+{
+	VTABLE_MyClass	*vtable;
+	int	a;
+	int	c;
+}		MyClass;
