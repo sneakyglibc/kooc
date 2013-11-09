@@ -32,17 +32,14 @@ def listToListStr(param):
     idx = 0
     l_str = []
     position = initPos(nb_list, param)
-    tmp = ""
+    tmp = []
     while idx <= nb_list:
-        if idx != nb_list:
-            tmp += param[position[idx][0]][position[idx][1]] + ", "
-        else:
-            tmp += param[position[idx][0]][position[idx][1]]
+        tmp.append(param[position[idx][0]][position[idx][1]])
         idx += 1
         if idx > nb_list:
             l_str.append(tmp)
             idx = 0
-            tmp = ""
+            tmp = []
             if updatePos(position, nb_list) == False:
                 break
     return(l_str)
