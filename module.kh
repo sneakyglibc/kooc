@@ -1,8 +1,4 @@
 @module testkooc
 {
-  int c;
-  char c;
-  int b;
-  char c;
-  int func(int);
+  int func(int, char);
 }

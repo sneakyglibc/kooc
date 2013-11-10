@@ -10,7 +10,7 @@ class   Module(Grammar, Declaration):
            "":module_block
            #new_root(_, module_block)
            "@module" Base.id:n #add_name(_, n) "{"
-           [decl_mod]*
+           [decl_mod | ";"]*
            "}" ;
 
         decl_mod ::=

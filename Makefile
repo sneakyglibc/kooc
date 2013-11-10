@@ -2,13 +2,7 @@ NAME		=	project_using_kooc
 
 KOOC_SRCS	=	test.kc			\
 
-KOOC_HDRS	=	module.kh		\
-
 SRCS		=	$(KOOC_SRCS:.kc=.c)
-
-HDRS		=	$(KOOC_HDRS:.kh=.h)
-
-$(HDRS)		:	kooc $(KOOC_HDRS)
 
 $(SRCS)		:	$(HDRS)
 			kooc $(KOOC_SRCS)
