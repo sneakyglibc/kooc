@@ -1,3 +1,15 @@
+@import "module.kh"
+char b;
+int d;
+@implementation testkooc
+{
+w = [testkooc func :5 :b];
+int tutu(int)
+{
+	   www = [testkooc func :w :b];
+}
+}
+
 int main()
 {
 	int b;

@@ -41,7 +41,7 @@ def entierType(s):
     if (nb >= 0) & (nb <= 65535):
         Type.append("unsigned short")
     if (nb >= -2147483648) & (nb <= 2147483647):
-        Type.append("int")
+        Type.append("0int")
     if (nb >= 0) & (nb <= 4294967295):
         Type.append("unsigned int")
     if (nb >= -9223372036854775808) & (nb <= 9223372036854775807):
@@ -80,7 +80,6 @@ def resolveType(s):
         return floatType(s)
     if ret == "entier":
         return entierType(s)
-    Type.append("ERROR")
     return (Type)
 
 # print(resolveType("\"Ceci est un test\""))

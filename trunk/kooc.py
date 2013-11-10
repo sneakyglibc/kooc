@@ -8,21 +8,23 @@ from cnorm.parsing.declaration import Declaration
 from cnorm.parsing.expression import Idset
 from weakref import ref
 import sys
-from cnorm.parsing.declaration import Declaration
 from cnorm.passes import to_c
 from module_import import Import
 from module import Module
 from call import Call
 from implementation import Implementation
+from drecovery import Drecovery
 import dumbXml
 import mangle
 
 mlist = {}
+clist = {}
+slist = {}
+glist = {"__global__":[]}
 ilist = []
 
 
-class   Kooc(Grammar, Call, Declaration, Import, Module, Implementation):
-
+class   Kooc(Grammar, Call, Drecovery, Declaration, Import, Module, Implementation):
     entry = "kooc"
     grammar = """
         kooc ::=
@@ -30,15 +32,20 @@ class   Kooc(Grammar, Call, Declaration, Import, Module, Implementation):
             [
                 "":current_block
                 #new_root(_, current_block)
-                [ [Declaration.declaration] |
+                [ [declaration] |
                   [Import.import:imp #add_import(_, imp)] |
                   [Module.module:mod #add_module(_, mod)] |
-                  [Implementation.implementation:ip #add_imp(_, ip)]
+                  [Implementation.implementation]
                 ]*
             ]
             Base.eof
         ;
 """
+
+@meta.hook(Kooc)
+def printg(self):
+    print(glist)
+    return True
 
 @meta.hook(Kooc)
 def add_import(self, ast, ret):
