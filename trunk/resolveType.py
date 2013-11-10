@@ -37,17 +37,17 @@ def entierType(s):
     nb = int(s)
     Type = list()
     if (nb >= -32768) & (nb <= 32767):
-        Type.append("short")
+        Type.append("1sint")
     if (nb >= 0) & (nb <= 65535):
-        Type.append("unsigned short")
+        Type.append("2suint")
     if (nb >= -2147483648) & (nb <= 2147483647):
         Type.append("0int")
     if (nb >= 0) & (nb <= 4294967295):
-        Type.append("unsigned int")
+        Type.append("1uint")
     if (nb >= -9223372036854775808) & (nb <= 9223372036854775807):
-        Type.append("long long")
+        Type.append("1Lint")
     if (nb >= 0) & (nb <= 18446744073709551615):
-        Type.append("unsigned long long")
+        Type.append("2Luint")
     return Type
 
 def floatType(s):
@@ -56,10 +56,10 @@ def floatType(s):
         nb *= -1
     Type = list()
     if (nb >= sys.float_info.min) & (nb <= sys.float_info.max):
-        Type.append("float")
-        Type.append("double")
+        Type.append("0float")
+        Type.append("0double")
     if (nb < sys.float_info.min) & (nb > sys.float_info.max):
-        Type.append("double")
+        Type.append("0double")
     return Type
 
 def resolveType(s):
@@ -69,11 +69,11 @@ def resolveType(s):
         Type.append("bool")
         return Type
     if isChar(s):
-        Type.append("char")
-        Type.append("unsigned char")
+        Type.append("0char")
+        Type.append("1uchar")
         return (Type)
     if isString(s):
-        Type.append("const char *")
+        Type.append("2pcchar")
         return (Type)
     ret = isNumber(s)
     if ret == "float":

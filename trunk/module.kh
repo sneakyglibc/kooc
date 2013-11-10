@@ -1,7 +1,4 @@
 @module testkooc
 {
   int func(int, char);
-  int a;
-  unsigned int a;
-  long a;
 }
