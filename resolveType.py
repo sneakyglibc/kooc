@@ -8,7 +8,9 @@ def isChar(s):
     return False
 
 def isString(s):
-    if (s[0] != "\"") & (s[-1] != "\""):
+    if len(s) < 4:
+        return False
+    if (s[0] != "\'") & (s[-1] != "\'"):
         return False
     return True
 

@@ -1,6 +1,12 @@
-@module testkooc
+
+@class testkooc
+{ 
+struct a
 {
+	int cvvv;
+};
+ struct a x;
  int a;
-  int func(int, char);
-int func(double, double);
+  char func(double, double);
+int func(int, char);
 }
