@@ -6,17 +6,17 @@ SRCS		=	$(KOOC_SRCS:.kc=.c)
 
 $(SRCS)		:	kooc $(KOOC_SRCS)
 
-$(NAME)		:	$(SRCS)
-			gcc $(SRCS) -o $(NAME)
+koockies	:	
+			./kooc $(KOOC_SRCS)
 
-all		:	$(NAME)
+$(NAME)		:	koockies
+			gcc $(SRCS) -o $(NAME)
 
 clean		:	rm -rf $(NAME)
 
 fclean		:	clean
-			rm -rf $(HDRS)
 			rm -rf $(SRCS)
 
 re		:	fclean all
 
-.PHONY		:	all clean fclean re
+.PHONY		:	all koockies clean fclean re

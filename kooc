@@ -1,4 +1,4 @@
 #!/bin/sh
 
-python3.3 kooc.py $*
+python3.3 main.py $*
 exit 0
