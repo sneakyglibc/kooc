@@ -1,4 +1,6 @@
 @module testkooc
 {
+ int a;
   int func(int, char);
+int func(double, double);
 }
