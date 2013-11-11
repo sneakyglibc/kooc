@@ -1,5 +1,5 @@
 
-@class testkooc
+@module testkooc
 { 
 struct a
 {
