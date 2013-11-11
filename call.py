@@ -35,7 +35,7 @@ def res(llist, name, inscope):
         if hasattr(name, "_name"):
             if it["name"] == name._name:
                 llist.append(it["type"])
-        else:
+        elif hasattr(name, "value"):
             if it["name"] == name.value:
                 llist.append(it["type"])
 
@@ -54,7 +54,7 @@ def resolve(name, cur_scope):
                         llist.append(it["type"])
                     elif it["mangle"] == name._name:
                         llist.append(it["type"])
-                else:
+                elif hasattr(name, "value"):
                     if it["name"] == name.value:
                         llist.append(it["type"])
                     elif it["mangle"] == name.value:
@@ -89,7 +89,10 @@ def mangle_func(self, call, spe, mod, var, params):
     list_params = []
     found = False
     for item in params.node:
-        tmp = resolve(item, [mlist, clist])
+        if "<class 'cnorm.nodes.Func'>" != str(type(item)):
+            tmp = resolve(item, [mlist, clist])
+        else:
+            tmp = resolve(item.call_expr, [mlist, clist])
         if tmp == []:
             print("Error ambiguious statement")
             return False
