@@ -1,5 +1,5 @@
 @import "module.kh"
-char b;
+const char b;
 int d;
 
 @implementation testkooc
@@ -8,14 +8,12 @@ int d;
 	int func(int, char)
 {
 	@!(int)[testkooc.a] = 5;
-	   www = @!(int)[testkooc func :5 :'v'];
 	   return a;
 }
 
 	int func(double, double)
 {
 	@!(int)[testkooc.a] = 5;
-	   www = @!(int)[testkooc func :5 :'v'];
 	   return a;
 }
 }
@@ -24,8 +22,8 @@ int main()
 {
   double c;
   double d;
-  [testkooc func :c :d];
-  [testkooc func :45 :'v'];
+  const char * z;
+  @!(int)[testkooc func :5 :'i'];
 	int b;
   fu("salut");
 }

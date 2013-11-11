@@ -13,8 +13,13 @@ class   Import(Grammar):
 def rule_import(self, ast, ret):
     from kooc import Kooc
     from kooc import ilist
-    tmp = ret.value.split("/")[-1]
+    import os
     global ilist
+
+    if not os.path.exists(ret.value):
+        print("Error : file not found : " + ret.value)
+        return False
+    tmp = ret.value.split("/")[-1]
     if tmp in ilist:
         print("Warning : recursive inclusion ", tmp)
         ast.nimport = None
