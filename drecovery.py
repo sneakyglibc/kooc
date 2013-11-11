@@ -12,7 +12,7 @@ class   Drecovery(Grammar, Declaration):
             declaration_specifier*:dsp
             init_declarator:decl
             #not_empty(current_block, dsp, decl)
-            #end_decl(current_block, decl)
+            #end_decl(current_block, decl) #new_scope_decl(decl)
             [
                 ',' 
                 #copy_ctype(local_specifier, decl)
@@ -24,7 +24,7 @@ class   Drecovery(Grammar, Declaration):
                 |
                 compound_statement:b
                 #add_body(decl, b)
-            ] #new_dcl(decl)
+            ]#new_dcl(decl)
         ;
         compound_statement ::=
             [
@@ -41,11 +41,17 @@ class   Drecovery(Grammar, Declaration):
                """
 scope = "__global__"
 isscope = False
+decl = ""
 
 @meta.hook(Drecovery)
 def global_scope(self):
     global scope
     scope = "__global__"
+    return True
+@meta.hook(Drecovery)
+def new_scope_decl(self, name):
+    global decl
+    decl = name.node._name
     return True
 
 @meta.hook(Drecovery)
@@ -54,8 +60,9 @@ def new_scope(self):
     global glist
     global scope
     global isscope
+    global decl
     isscope = True
-    scope = glist[scope][-1]["name"]
+    scope = decl
     if not hasattr(glist, scope):
         glist[scope] = []
     return True
@@ -71,6 +78,9 @@ def new_dcl(self, decl):
     global isscope
     global implement
 
+    if decl.node._name == "func":
+        print(isscope)
+        print(implement["name"])
     if isscope == True and implement["name"] != "":
         mangle(decl.node, implement["name"], implement["type"])
     else:

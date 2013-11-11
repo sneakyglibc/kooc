@@ -1,4 +1,4 @@
-@import "module.kh"
+/*@import "module.kh"
 const char b;
 int d;
 
@@ -16,14 +16,12 @@ int d;
 	@!(int)[testkooc.a] = 5;
 	   return a;
 }
-}
+}*/
 
 int main()
 {
-  double c;
+  /*double c;
   double d;
   const char * z;
-  @!(int)[testkooc func :5 :'i'];
-	int b;
-  fu("salut");
+  [testkooc func :5 :'i'];*/
 }
