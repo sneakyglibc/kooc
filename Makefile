@@ -4,8 +4,7 @@ KOOC_SRCS	=	test.kc			\
 
 SRCS		=	$(KOOC_SRCS:.kc=.c)
 
-$(SRCS)		:	$(HDRS)
-			kooc $(KOOC_SRCS)
+$(SRCS)		:	kooc $(KOOC_SRCS)
 
 $(NAME)		:	$(SRCS)
 			gcc $(SRCS) -o $(NAME)
