@@ -5,7 +5,7 @@ int d;
 {
 int tutu(int)
 {
-	   www = [testkooc func :"5" :'v'];
+	   www = [testkooc func :5 :'v'];
 }
 }
 
