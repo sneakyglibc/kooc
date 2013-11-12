@@ -42,5 +42,6 @@ int	main()
  	@!(int)[MyModule.result] = @!(int)[MyModule add :42 :21];
 	@!(int *)[MyModule.result] = @!(int *)[MyModule add :'toto' :'tata'];
 	@!(float)[MyModule.result] = @!(float)[MyModule add :42.21 :21.42];
+	@!(int)[MyModule.result] += @!(int)[MyModule add :@!(int)[MyModule add :8 :5] :5];
 	return (0);
 }
