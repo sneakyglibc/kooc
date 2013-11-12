@@ -1,0 +1,17 @@
+@import "mangling.kh"
+
+
+@implementation MangleMoiCa
+{
+	int func(int a, char c)
+	{
+	  @!(int)[MangleMoiCa.a] = a;
+	  return (a);
+	}
+}
+
+int	main()
+{
+	[MangleMoiCa func :12 :'c'];
+	return (0);
+}
