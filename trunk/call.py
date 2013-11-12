@@ -142,13 +142,13 @@ def func_algo(call, mod, var, mangle, scope_list):
     return False
 
 
-def algo(call, mod, var, scope):
+def algo(call, mod, var, scope, ptr):
     result = []
     for item in scope[mod.value]:
         if item["name"] == var.value and "V" == item["mangle"].split("_")[3]:
             result.append(item["mangle"])
     if len(result) == 1:
-        call.value = result[0]
+        call.value = ptr + result[0]
     elif len(result) > 1:
         print_error("ambiguous statement : " + mod.value + " " + var.value)
         return False
@@ -157,13 +157,13 @@ def algo(call, mod, var, scope):
         return False
     return True
 
-def algo_spe(call, mod, var, mangle, scope): 
+def algo_spe(call, mod, var, mangle, scope, ptr): 
     result = []
     for item in scope[mod.value]:
         if item["mangle"] == mangle:
             result.append(mangle)
     if len(result) == 1:
-        call.value = result[0]
+        call.value = ptr + result[0]
     elif len(result) > 1:
         print_error("ambiguous statement : " + mod.value + " " + var.value)
         return False
@@ -174,11 +174,16 @@ def algo_spe(call, mod, var, mangle, scope):
 
 @meta.hook(Call)
 def add_call(self, call, mod, var, spe):
-    from kooc import mlist, clist
+    from kooc import mlist, clist, slist, glist
+    from drecovery import scope
     global mlist
+    global slist
     global clist
+    global glist
+    global scope
     scope_list = []
     type_object = ""
+    ptr = ""
     if mod.value in mlist:
         scope_list = mlist
         type_object = "M"
@@ -186,13 +191,24 @@ def add_call(self, call, mod, var, spe):
         scope_list = clist
         type_object = "C"
     else:
-        print_error("error no variable called : " + mod.value)
-        return False
+        tmp = None
+        for item in glist[scope]:
+            if item["name"] == mod.value and len(item["type"]) > 3 and item["type"][:3] == "2Sp":
+                if item["type"][3:] in clist:
+                    tmp = item
+                    break
+        if tmp == None:
+            print_error("error no module called : " + mod.value)
+            return False
+        scope_list = slist
+        ptr = mod.value + "->"
+        mod.value = tmp["type"][3:]
+        type_object = "CM"
     if spe.value == "":
-        return algo(call, mod, var, scope_list)
+        return algo(call, mod, var, scope_list, ptr)
     else:
         cparse = Declaration()
         ast = cparse.parse(spe.value + " " + var.value + ";")
         m = mangle(ast.body[0], mod.value, type_object)["mangle"]
-        return algo_spe(call, mod, var, m, scope_list)
+        return algo_spe(call, mod, var, m, scope_list, ptr)
     return True

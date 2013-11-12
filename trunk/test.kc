@@ -10,5 +10,6 @@
 
 int main()
 {
- t = @!(struct testkooc *)[testkooc new];
+ struct testkooc *test;
+ t = @!(int)[test.a];
 }
