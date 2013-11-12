@@ -1,5 +1,13 @@
 @import "module.kh"
 
+@implementation testkooc
+{
+  @member
+  void *toto(double, float)
+  {
+  }
+}
+
 int main()
 {
  t = @!(struct testkooc *)[testkooc new];
