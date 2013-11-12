@@ -120,8 +120,6 @@ def add_cl(self, ast, ret):
     vlist[cl].append(m_free)
     tmp = deepcopy(d_free)
     tmp.body[0]._name = "(*" + tmp.body[0]._name + ")"
-    print(tmp.body[0])
-    print(private_func[0])
     tmp.body[0].body = None
     st._ctype.fields.append(tmp.body[0])
     free = "void delete(struct " + cl + " *self) { void *fr = (void*)( ((struct " + vt + " *)(self)) - 1); free(fr);}"
