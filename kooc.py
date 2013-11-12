@@ -101,6 +101,7 @@ def add_cl(self, ast, ret):
         vlist[ret.mname] = []
     for item in private_func:
         vlist[ret.mname].append(mangle.mangle(item, ret.mname, "CM"))
+        item._name = "(*" + item._name + ")"
     st = nodes.Decl("vtable_" + ret.mname)
     st._ctype = nodes.ComposedType("vtable_" + ret.mname)
     st._ctype._specifier = 1
