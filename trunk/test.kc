@@ -11,5 +11,9 @@
 int main()
 {
  struct testkooc *test;
- t = @!(int)[test.a];
+ int a;
+ char b;
+ [testkooc func :a :b];	
+ [testkooc func :5 :'5'];
+ t = [testkooc func :@!(int)[test.a] :'5'];
 }
