@@ -13,12 +13,12 @@ class   Mclass(Grammar):
            #new_root(_, module_block)
            #new_private(_, private_block)
            "@class" Base.id:n #add_name(_, n) "{"
-           [decl_mod
-                | [ #begin_private "@member" [ ["{" [decl_mod | ";"]* "}"] | decl_mod | ";" ] #end_private ]
+           [decl_cl
+                | [ #begin_private "@member" [ ["{" [decl_cl | ";"]* "}"] | decl_cl | ";" ] #end_private ]
                 | ";"]*
            "}"
         ;
-        decl_mod ::=
+        decl_cl ::=
             "":local_specifier
             #create_ctype(local_specifier)
             declaration_specifier+:dsp
@@ -59,7 +59,7 @@ class   Mclass(Grammar):
             '{'
                 "":current_block
                 #new_composed(_, current_block)
-                decl_mod*
+                decl_cl*
             '}'
         ;
                """
