@@ -104,8 +104,10 @@ def add_cl(self, ast, ret):
     nod = parse.parse("struct " + ret.mname + " * self;");
     for item in private_func:
         vlist[ret.mname].append(mangle(item, ret.mname, "CM"))
-        item._name = "(*" + item._name + ")"
         item._ctype._params.append(nod.body[0])
+        ntmp = deepcopy(item)
+        ast.node.body.append(ntmp)
+        item._name = "(*" + item._name + ")"
     st = nodes.Decl("vtable_" + ret.mname)
     st._ctype = nodes.ComposedType("vtable_" + ret.mname)
     st._ctype._specifier = 1
