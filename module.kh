@@ -1,18 +1,12 @@
 
 @class testkooc
 { 
-struct a
-{
-	int cvvv;
-} x;
- struct a x;
  @member {
  int a;
  int b;
 }
  @member
  void *toto(double, float);
-int b;
-  char *func(double, double);
-int func(int, char);
+ @member
+ int func(int, char);
 }

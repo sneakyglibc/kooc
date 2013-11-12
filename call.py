@@ -88,17 +88,19 @@ def mangle_func(self, call, spe, mod, var, params):
         return False
     cparse = Declaration()
     list_params = []
+    all_params = [""]
     found = False
-    for item in params.node:
-        if "<class 'cnorm.nodes.Func'>" != str(type(item)):
-            tmp = resolve(item, [mlist, clist])
-        else:
-            tmp = resolve(item.call_expr, [mlist, clist])
-        if tmp == []:
-            print_error("Error ambiguious statement")
-            return False
-        list_params.append(tmp)
-    all_params = listToListStr(list_params)
+    if hasattr(params, "node"):
+        for item in params.node:
+            if "<class 'cnorm.nodes.Func'>" != str(type(item)):
+                tmp = resolve(item, [mlist, clist])
+            else:
+                tmp = resolve(item.call_expr, [mlist, clist])
+            if tmp == []:
+                print_error("Error ambiguious statement")
+                return False
+            list_params.append(tmp)
+        all_params = listToListStr(list_params)
     for item in all_params:
         if spe.value == "":
             m = mangle_func_from(mod.value, type_object, var.value, None, item)

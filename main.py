@@ -1,7 +1,7 @@
 from kooc import Kooc
 import dumbXml
 import sys
-
+from pyrser.error import ParseError
 
 
 
