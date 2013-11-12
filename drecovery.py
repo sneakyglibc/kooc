@@ -49,6 +49,7 @@ def global_scope(self):
     global scope
     scope = "__global__"
     return True
+
 @meta.hook(Drecovery)
 def new_scope_decl(self, name):
     global decl
@@ -85,6 +86,9 @@ def new_dcl(self, decl):
         if implement["type"] == "M":
             test = mlist
         if implement["type"] == "CM":
+            parse = Declaration()
+            nod = parse.parse("struct " + implement["name"] + " * self;");
+            decl.node._ctype._params.append(nod.body[0])
             test = vlist
         found = False
         for item in test[implement["name"]]:

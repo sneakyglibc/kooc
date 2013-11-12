@@ -100,9 +100,12 @@ def add_cl(self, ast, ret):
 
     if not hasattr(vlist, ret.mname):
         vlist[ret.mname] = []
+    parse = Declaration()
+    nod = parse.parse("struct " + ret.mname + " * self;");
     for item in private_func:
         vlist[ret.mname].append(mangle(item, ret.mname, "CM"))
         item._name = "(*" + item._name + ")"
+        item._ctype._params.append(nod.body[0])
     st = nodes.Decl("vtable_" + ret.mname)
     st._ctype = nodes.ComposedType("vtable_" + ret.mname)
     st._ctype._specifier = 1
@@ -114,19 +117,18 @@ def add_cl(self, ast, ret):
     cl = ret.mname
     vt = "vtable_" + cl    
 
-    free = "void delete(struct " + cl + " *self) { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
+    free = "void delete() { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
     d_free = parse.parse(free)
     m_free = mangle(d_free.body[0], cl, "CM")
     vlist[cl].append(m_free)
-    tmp = deepcopy(d_free)
-    tmp.body[0]._name = "(*" + tmp.body[0]._name + ")"
-    tmp.body[0].body = None
-    st._ctype.fields.append(tmp.body[0])
     free = "void delete(struct " + cl + " *self) { void *fr = (void*)( ((struct " + vt + " *)(self)) - 1); free(fr);}"
     d_free = parse.parse(free)
     d_free.body[0]._name = m_free["mangle"]
     ast.node.body.append(d_free.body[0])
-
+    tmp = deepcopy(d_free)
+    tmp.body[0]._name = "(*" + tmp.body[0]._name + ")"
+    tmp.body[0].body = None
+    st._ctype.fields.append(tmp.body[0])
 
     ptr_func = ""
     for item in vlist[cl]:
