@@ -2,6 +2,7 @@ from pyrser.grammar import Grammar
 from pyrser import meta, directives
 from cnorm.parsing.declaration import Declaration
 from mangle import mangle, mangle_func_from
+from print_error import print_error
 
 class   Call(Grammar):
 
@@ -83,7 +84,7 @@ def mangle_func(self, call, spe, mod, var, params):
         scope_list = clist
         type_object = "C"
     else:
-        print("error no module called", mod.value)
+        print_error("error no module called : " + mod.value)
         return False
     cparse = Declaration()
     list_params = []
@@ -94,7 +95,7 @@ def mangle_func(self, call, spe, mod, var, params):
         else:
             tmp = resolve(item.call_expr, [mlist, clist])
         if tmp == []:
-            print("Error ambiguious statement")
+            print_error("Error ambiguious statement")
             return False
         list_params.append(tmp)
     all_params = listToListStr(list_params)
@@ -107,12 +108,12 @@ def mangle_func(self, call, spe, mod, var, params):
             m = mangle_func_from(mod.value, type_object, var.value, ast.body[0], item)
             res = func_algo_spe(call, mod, var, m, scope_list)
         if res == True and found == True:
-            print("ambiguous function", mod.value, var.value)
+            print_error("ambiguous function : " + mod.value + " " + var.value)
             return False
         elif res == True:
             found = True
     if found == False:
-        print("Don't found function", mod.value, var.value)
+        print_error("Don't found function : " + mod.value + " " + var.value)
         return False
     return True
 
@@ -147,10 +148,10 @@ def algo(call, mod, var, scope):
     if len(result) == 1:
         call.value = result[0]
     elif len(result) > 1:
-        print("ambiguous statement", mod.value, var.value)
+        print_error("ambiguous statement : " + mod.value + " " + var.value)
         return False
     else:
-        print("error no variable called", mod.value, var.value)
+        print_error("error no variable called : " + mod.value + " " + var.value)
         return False
     return True
 
@@ -162,10 +163,10 @@ def algo_spe(call, mod, var, mangle, scope):
     if len(result) == 1:
         call.value = result[0]
     elif len(result) > 1:
-        print("ambiguous statement", mod.value, var.value)
+        print_error("ambiguous statement : " + mod.value + " " + var.value)
         return False
     else:
-        print("error no variable called", mod.value, var.value)
+        print_error("error no variable called : " + mod.value + " " + var.value)
         return False
     return True
 
@@ -183,7 +184,7 @@ def add_call(self, call, mod, var, spe):
         scope_list = clist
         type_object = "C"
     else:
-        print("error no module called", mod.value)
+        print_error("error no variable called : " + mod.value)
         return False
     if spe.value == "":
         return algo(call, mod, var, scope_list)

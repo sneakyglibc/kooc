@@ -54,7 +54,7 @@ class   Module(Grammar, Declaration):
         composed_fields ::=
             '{'
                 "":current_block
-                #new_composed(_, module_block)
+                #new_composed(_, current_block)
                 decl_mod*
             '}'
         ;

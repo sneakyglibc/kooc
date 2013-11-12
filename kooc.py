@@ -1,5 +1,4 @@
 from pyrser import meta, directives
-from pyrser.passes import to_yml
 from pyrser.hooks import copy, echo
 from pyrser.parsing.node import Node
 from cnorm import nodes
@@ -15,17 +14,10 @@ from module_class import Mclass
 from call import Call
 from implementation import Implementation
 from drecovery import Drecovery
-import dumbXml
 import mangle
+from print_error import print_error
 
-mlist = {}
-clist = {}
-slist = {}
-glist = {"__global__":[]}
-ilist = []
-
-
-class   Kooc(Grammar, Call, Drecovery, Declaration, Import, Module, Mclass, Implementation):
+class   Kooc(Grammar, Call, Drecovery, Declaration, Import, Mclass, Module, Implementation):
     entry = "kooc"
     grammar = """
         kooc ::=
@@ -44,6 +36,13 @@ class   Kooc(Grammar, Call, Drecovery, Declaration, Import, Module, Mclass, Impl
         ;
 """
 
+mlist = {}
+clist = {}
+slist = {}
+glist = {"__global__":[]}
+ilist = []
+vlist = {}
+
 @meta.hook(Kooc)
 def add_import(self, ast, ret):
     if ret.nimport != None:
@@ -60,7 +59,7 @@ def add_imp(self, ast, ret):
     if ret.mname in clist:
         ttype = "C"
     if ttype == "":
-        print("Error module or class not declared : " + ret.mname)
+        print_error("Error module or class not declared : " + ret.mname)
         return False
     for item in ret.node.body:
         mangle.mangle(item, ret.mname, ttype)
@@ -72,8 +71,10 @@ def add_cl(self, ast, ret):
     from cnorm import nodes
     global clist
     global mlist
-    if ret.mname in mlist:
-        print("Error module or class already declared : " + ret.mname)
+    global vlist
+
+    if ret.mname in mlist or ret.mname in clist:
+        print_error("Error module or class already declared : " + ret.mname)
         return False
     if not ret.mname in clist:
         clist[ret.mname] = []
@@ -81,11 +82,38 @@ def add_cl(self, ast, ret):
         clist[ret.mname].append(mangle.mangle(item, ret.mname, "C"))
     ast.node.body.extend(ret.node.body)
 
-    st = nodes.Decl("")
+    test = "<class \'cnorm.nodes.FuncType\'>"
+    private_var = [item for item in ret.private.body if str(type(item._ctype)) != test]
+    private_func = [item for item in ret.private.body if str(type(item._ctype)) == test]
+
+    if not hasattr(slist, ret.mname):
+        slist[ret.mname] = []
+    for item in private_var:
+        slist[ret.mname].append(mangle.mangle(item, ret.mname, "CM"))
+    st = nodes.Decl(ret.mname)
     st._ctype = nodes.ComposedType(ret.mname)
     st._ctype._specifier = 1
-    st._ctype.fields = []
+    st._ctype._storage = 2
+    st._ctype.fields = private_var
     ast.node.body.append(st)
+
+    if not hasattr(vlist, ret.mname):
+        vlist[ret.mname] = []
+    for item in private_func:
+        vlist[ret.mname].append(mangle.mangle(item, ret.mname, "CM"))
+    st = nodes.Decl("vtable_" + ret.mname)
+    st._ctype = nodes.ComposedType("vtable_" + ret.mname)
+    st._ctype._specifier = 1
+    st._ctype._storage = 2
+    st._ctype.fields = private_func
+    ast.node.body.append(st)
+
+    parse = Declaration()
+    dl = "void *K_C_new_"
+    code = "return (malloc(sizeof(" + "vtable_" + ret.mname \
+        + ") + sizeof(" + ret.mname  + ")) + sizeof(" + "vtable_" + ret.mname + "))"
+    mal = parse.parse(dl + ret.mname + "(){" + code + ";}")
+    ast.node.body.append(mal.body[0])
     return True
 
 @meta.hook(Kooc)
@@ -94,23 +122,12 @@ def add_module(self, ast, ret):
     global mlist
     global clist
     if ret.mname in clist:
-        print("Error module or class already declared : " + ret.mname)
+        print_error("Error module or class already declared : " + ret.mname)
         return False
     if not ret.mname in mlist:
         mlist[ret.mname] = []
     for item in ret.node.body:
         mlist[ret.mname].append(mangle.mangle(item, ret.mname, "M"))
     ast.node.body.extend(ret.node.body)
-    return True
-
-@meta.hook(Kooc)
-def printvalue(self):
-    print(ilist)
-    print(mlist)
-    return True
-
-@meta.hook(Kooc)
-def printnode(self, ast):
-    print(ast.node)
     return True
 

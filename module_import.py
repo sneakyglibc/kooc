@@ -1,5 +1,6 @@
 from pyrser.grammar import Grammar
 from pyrser import meta, directives
+from print_error import print_error
 
 class   Import(Grammar):
 
@@ -17,11 +18,11 @@ def rule_import(self, ast, ret):
     global ilist
 
     if not os.path.exists(ret.value):
-        print("Error : file not found : " + ret.value)
+        print_error("Error : file not found : " + ret.value)
         return False
     tmp = ret.value.split("/")[-1]
     if tmp in ilist:
-        print("Warning : recursive inclusion ", tmp)
+        print_error("Warning : recursive inclusion " + tmp)
         ast.nimport = None
     else:
         ilist.append(tmp)
