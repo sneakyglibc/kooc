@@ -118,7 +118,7 @@ def add_cl(self, ast, ret):
     d_free = parse.parse(free)
     m_free = mangle(d_free.body[0], cl, "CM")
     vlist[cl].append(m_free)
-    free = "void delete(struct " + cl + " *self) { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
+    free = "void delete(struct " + cl + " *self) { void *fr = (void*)( ((struct " + vt + " *)(self)) - 1); free(fr);}"
     d_free = parse.parse(free)
     d_free.body[0]._name = m_free["mangle"]
     ast.node.body.append(d_free.body[0])
@@ -129,7 +129,7 @@ def add_cl(self, ast, ret):
         ptr_func += "ptr->" + item["mangle"] + " = &" + item["mangle"] + ";"
     dl = "struct " + cl + " *alloc"
     code = vt + " *ptr = (struct " + vt + " *) malloc(sizeof(struct " + cl + ") + sizeof(struct " + vt + "));" \
-                + ptr_func + "return (struct " + cl + " *)(ptr + sizeof(struct " + vt + "));"
+                + ptr_func + "return (struct " + cl + " *)(ptr + 1);"
     alloc = dl + "(){" + code + "}"    
     d_alloc = parse.parse(alloc)
     m_alloc = mangle(d_alloc.body[0], cl, "C")
