@@ -13,6 +13,6 @@ struct a
  @member
  void *toto(double, float);
 int b;
-  char func(double, double);
+  char *func(double, double);
 int func(int, char);
 }
