@@ -1,16 +1,12 @@
 @class			MyClass
 {
-/*
 	@member
 	{
-		int a;
-		float a;
-		char *a;
+		int a = 5;
 	}
-		int notMember;
-		@member int Member;
+
 		@member void affClass();
-		void add(int a, int b);
+/*
 	@member
 	{
 		float sub(float a, float b);
