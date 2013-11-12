@@ -33,48 +33,47 @@ class   Call(Grammar):
 
 def res(llist, name, inscope):
     for it in inscope:
-        if hasattr(name, "_name"):
-            if it["name"] == name._name:
-                llist.append(it["type"])
-        elif hasattr(name, "value"):
-            if it["name"] == name.value:
-                llist.append(it["type"])
+        if it["name"] == name:
+            llist.append(it["type"])
 
 def resolve(name, cur_scope):
-    from kooc import glist
+    from kooc import glist, slist
     from drecovery import scope
     from resolveType import resolveType
-    global glist
-    global scope
+    global glist, slist, scope
     llist = []
-    for inscope in cur_scope:
-        for item in inscope:
-            for it in inscope[item]:
-                if hasattr(name, "_name"):
-                    if it["name"] == name._name:
+    if hasattr(name, "_name"):
+        test = name._name
+    elif hasattr(name, "value"):
+        test = name.value
+    if "->" in test:
+        test = test.split("->")[1]
+        cur_scope = slist
+        for inscope in cur_scope:
+            for it in cur_scope[inscope]:
+                if it["mangle"] == test:
+                    llist.append(it["type"])
+                elif it["name"] == test: 
+                    llist.append(it["type"])
+    else:
+        for inscope in cur_scope:
+            for item in inscope:
+                for it in inscope[item]:
+                    if it["mangle"] == test:
                         llist.append(it["type"])
-                    elif it["mangle"] == name._name:
-                        llist.append(it["type"])
-                elif hasattr(name, "value"):
-                    if it["name"] == name.value:
-                        llist.append(it["type"])
-                    elif it["mangle"] == name.value:
+                    elif it["name"] == test: 
                         llist.append(it["type"])
     res(llist, name, glist["__global__"])
     if scope != "__global__":
-        res(llist, name, glist[scope])
-    if hasattr(name, "_name"):
-        llist += resolveType(name._name)
-    else:
-        llist += resolveType(name.value)
+        res(llist, test, glist[scope])
+    llist += resolveType(test)
     return llist
 
 @meta.hook(Call)
 def mangle_func(self, call, spe, mod, var, params):
     from kooc import mlist, clist
     from listToStr import listToListStr
-    global mlist
-    global clist
+    global mlist, clist
     scope_list = []
     type_object = ""
     if mod.value in mlist:

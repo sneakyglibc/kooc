@@ -7,6 +7,5 @@
 }
  @member
  void *toto(double, float);
- @member
  int func(int, char);
 }
