@@ -1,0 +1,10 @@
+@module MyAdd
+{
+	int     a;
+	float	a;
+	double	a;
+
+	int     add(int, int);
+	float   add(float, float);
+	short   add(short, short);
+}

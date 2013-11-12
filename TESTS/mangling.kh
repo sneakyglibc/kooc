@@ -1,0 +1,16 @@
+@module MangleMoiCa
+{
+	int a;
+	float a;
+	char a;
+	char *a;
+	double a;
+	int *a;
+	int **a;
+
+	int func(int, char);
+	int func(int, char *);
+	int func(int *, char);
+	float **func(int **, float);
+	double func(double, double);
+}
