@@ -109,11 +109,15 @@ def add_cl(self, ast, ret):
     ast.node.body.append(st)
 
     parse = Declaration()
-    dl = "void *K_C_new_"
-    code = "return (malloc(sizeof(" + "vtable_" + ret.mname \
-        + ") + sizeof(" + ret.mname  + ")) + sizeof(" + "vtable_" + ret.mname + "))"
-    mal = parse.parse(dl + ret.mname + "(){" + code + ";}")
-    ast.node.body.append(mal.body[0])
+    cl = ret.mname
+    vt = "vtable_" + ret.mname
+    dl = "struct " + ret.mname + " *K_C_new_"
+    code = vt + " *ptr = (struct " + vt + " *) malloc(sizeof(struct " + cl + ") + sizeof(struct " + vt + ")); ptr->func = &func; return (struct " + ret.mname + " *)(ptr + sizeof(struct " + vt + "));"
+    new = dl + ret.mname + "(){" + code + "}"
+    
+    free = "void delete(struct " + cl + " *obj) { void *fr = (void*)(obj - sizeof(struct " + vt + ")); free(fr);}"
+    mal = parse.parse(new + "\n" + free)
+    ast.node.body.extend(mal.body)
     return True
 
 @meta.hook(Kooc)

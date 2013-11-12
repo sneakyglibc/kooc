@@ -1,27 +1,5 @@
 @import "module.kh"
-const char b;
-int d;
-
-@implementation testkooc
-{
-
-	int func(int, char)
-{
-	@!(int)[testkooc.b] = 5;
-	   return a;
-}
-
-	char func(double, double)
-{
-	@!(int)[testkooc.b] = 5;
-	   return a;
-}
-}
 
 int main()
 {
-  double c;
-  double d;
-  const char * z;
-  [testkooc func :5 :'i'];
 }
