@@ -1,9 +1,14 @@
 @import "class.kh"
 
+@implementation MyClass
+{
+	@member void affClass()
+	{
+	  printf("%d\n", self->a);
+	}
+}
+
 int	main()
 {
-	struct MyClass *a;
-
-	a = [MyClass new];
 	return (0);
 }
