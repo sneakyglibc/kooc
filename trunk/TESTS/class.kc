@@ -2,7 +2,8 @@
 
 int	main()
 {
-	MyClass *a;
+	struct MyClass *a;
 
+	a = [MyClass new];
 	return (0);
 }
