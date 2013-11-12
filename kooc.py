@@ -114,8 +114,7 @@ def add_cl(self, ast, ret):
     vt = "vtable_" + ret.mname
     dl = "struct " + ret.mname + " *K_C_new_"
     code = vt + " *ptr = (struct " + vt + " *) malloc(sizeof(struct " + cl + ") + sizeof(struct " + vt + ")); ptr->func = &func; return (struct " + ret.mname + " *)(ptr + sizeof(struct " + vt + "));"
-    new = dl + ret.mname + "(){" + code + "}"
-    
+    new = dl + ret.mname + "(){" + code + "}"    
     free = "void delete(struct " + cl + " *obj) { void *fr = (void*)(obj - sizeof(struct " + vt + ")); free(fr);}"
     mal = parse.parse(new + "\n" + free)
     ast.node.body.extend(mal.body)
