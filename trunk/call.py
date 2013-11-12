@@ -27,7 +27,7 @@ class   Call(Grammar):
                 ] #mangle_func(call, spe, mod, var, params) #new_id(_, call) #new_func_call(_, _, params)
         ;
         specif ::=
-                ["@!(" [Base.id [" " Base.id]*]:_ ")"]?
+                ["@!(" [Base.id [" " [Base.id | '*']]*]:_ ")"]?
         ;
                 """
 
@@ -110,7 +110,7 @@ def mangle_func(self, call, spe, mod, var, params):
         if res == True and found == True:
             print_error("ambiguous function : " + mod.value + " " + var.value)
             return False
-        elif res == True:
+        if res == True:
             found = True
     if found == False:
         print_error("Don't found function : " + mod.value + " " + var.value)
