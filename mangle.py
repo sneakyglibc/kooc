@@ -22,7 +22,7 @@ def mangle_func(decl, name, name_type):
             params += gen_varname(item) + "_"
         decl._name = "K" + "_" + name_type + "_" + name + "_" + "F" + "_" + varname + "_" + str(len(decl._ctype._params)) + "_" + params + str(decl._name)
     else:
-        decl._name = "K" + "_" + name_type + "_" + name + "_" + "F" + "_" + varname  + "_" + str(decl._name)
+        decl._name = "K" + "_" + name_type + "_" + name + "_" + "F" + "_" + varname  + "_" + "0_" + str(decl._name)
     return {"name":backup, "type":varname, "mangle":decl._name}
 
 def mangle_composed(decl, name, name_type):
