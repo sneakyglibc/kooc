@@ -1,6 +1,7 @@
 from pyrser.grammar import Grammar
 from pyrser import meta, directives
 from cnorm.parsing.declaration import Declaration
+from print_error import print_error
 
 class   Drecovery(Grammar, Declaration):
 
@@ -69,7 +70,7 @@ def new_scope(self):
 
 @meta.hook(Drecovery)
 def new_dcl(self, decl):
-    from kooc import glist
+    from kooc import glist, mlist, clist
     from copy import deepcopy
     from mangle import mangle
     from implementation import implement
@@ -78,11 +79,18 @@ def new_dcl(self, decl):
     global isscope
     global implement
 
-    if decl.node._name == "func":
-        print(isscope)
-        print(implement["name"])
     if isscope == True and implement["name"] != "":
-        mangle(decl.node, implement["name"], implement["type"])
+        m = mangle(decl.node, implement["name"], implement["type"])
+        test = clist
+        if implement["type"] == "M":
+            test = mlist
+        found = False
+        for item in test[implement["name"]]:
+            if item["mangle"] == m["mangle"]:
+                found = True
+        if found == False:
+            print_error("Error function not declared :" + implement["name"] + " " + m["name"])
+            return False
     else:
         tmp = deepcopy(decl)
         m = mangle(tmp.node, "nonename", "M")
