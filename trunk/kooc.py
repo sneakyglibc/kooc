@@ -69,6 +69,7 @@ def add_imp(self, ast, ret):
 @meta.hook(Kooc)
 def add_cl(self, ast, ret):
     from cnorm import nodes
+    from copy import deepcopy
     global clist
     global mlist
     global vlist
@@ -113,11 +114,13 @@ def add_cl(self, ast, ret):
     cl = ret.mname
     vt = "vtable_" + cl    
 
-
     free = "void delete() { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
     d_free = parse.parse(free)
     m_free = mangle(d_free.body[0], cl, "CM")
     vlist[cl].append(m_free)
+    tmp = deepcopy(d_free)
+    tmp.body[0]._name = "(*" + tmp.body[0]._name + ")"
+    st._ctype.fields.append(tmp.body[0])
     free = "void delete(struct " + cl + " *self) { void *fr = (void*)( ((struct " + vt + " *)(self)) - 1); free(fr);}"
     d_free = parse.parse(free)
     d_free.body[0]._name = m_free["mangle"]
