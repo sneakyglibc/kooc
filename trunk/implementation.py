@@ -5,6 +5,7 @@ from call import Call
 from print_error import print_error
 
 implement = {"name":"", "type":""}
+save = ""
 
 class   Implementation(Grammar, Declaration):
 
@@ -12,10 +13,26 @@ class   Implementation(Grammar, Declaration):
     grammar =   """
                 implementation ::=
                         ["@implementation" Base.id:n #is_imp(n) "{"
+                        ["@member" #is_member]?
                         declaration*
+                        #not_member
                 "}"] #not_imp
                 ;
                 """
+@meta.hook(Implementation)
+def is_member(self):
+    global implement
+    if implement["type"] != "C":
+        print_error("Error @member in module")
+        return False
+    implement["type"] = "CM"
+    return True
+
+@meta.hook(Implementation)
+def not_member(self):
+    implement["type"] = save
+    return True
+
 @meta.hook(Implementation)
 def is_imp(self, name):
     global implement
@@ -24,6 +41,7 @@ def is_imp(self, name):
         implement["type"] = "M"
     elif name.value in clist:
         implement["type"] = "C"
+        save = "C"
     else:
         print_error("Error module not declared : " + name.value)
         return False

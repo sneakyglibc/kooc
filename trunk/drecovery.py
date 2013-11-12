@@ -70,7 +70,7 @@ def new_scope(self):
 
 @meta.hook(Drecovery)
 def new_dcl(self, decl):
-    from kooc import glist, mlist, clist
+    from kooc import glist, mlist, clist, vlist
     from copy import deepcopy
     from mangle import mangle
     from implementation import implement
@@ -84,6 +84,8 @@ def new_dcl(self, decl):
         test = clist
         if implement["type"] == "M":
             test = mlist
+        if implement["type"] == "CM":
+            test = vlist
         found = False
         for item in test[implement["name"]]:
             if item["mangle"] == m["mangle"]:
