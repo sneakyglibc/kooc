@@ -14,7 +14,7 @@ from module_class import Mclass
 from call import Call
 from implementation import Implementation
 from drecovery import Drecovery
-import mangle
+from mangle import mangle
 from print_error import print_error
 
 class   Kooc(Grammar, Call, Drecovery, Declaration, Import, Mclass, Module, Implementation):
@@ -79,7 +79,7 @@ def add_cl(self, ast, ret):
     if not ret.mname in clist:
         clist[ret.mname] = []
     for item in ret.node.body:
-        clist[ret.mname].append(mangle.mangle(item, ret.mname, "C"))
+        clist[ret.mname].append(mangle(item, ret.mname, "C"))
     ast.node.body.extend(ret.node.body)
 
     test = "<class \'cnorm.nodes.FuncType\'>"
@@ -89,7 +89,7 @@ def add_cl(self, ast, ret):
     if not hasattr(slist, ret.mname):
         slist[ret.mname] = []
     for item in private_var:
-        slist[ret.mname].append(mangle.mangle(item, ret.mname, "CM"))
+        slist[ret.mname].append(mangle(item, ret.mname, "CM"))
     st = nodes.Decl(ret.mname)
     st._ctype = nodes.ComposedType(ret.mname)
     st._ctype._specifier = 1
@@ -100,7 +100,7 @@ def add_cl(self, ast, ret):
     if not hasattr(vlist, ret.mname):
         vlist[ret.mname] = []
     for item in private_func:
-        vlist[ret.mname].append(mangle.mangle(item, ret.mname, "CM"))
+        vlist[ret.mname].append(mangle(item, ret.mname, "CM"))
         item._name = "(*" + item._name + ")"
     st = nodes.Decl("vtable_" + ret.mname)
     st._ctype = nodes.ComposedType("vtable_" + ret.mname)
@@ -111,13 +111,40 @@ def add_cl(self, ast, ret):
 
     parse = Declaration()
     cl = ret.mname
-    vt = "vtable_" + ret.mname
-    dl = "struct " + ret.mname + " *K_C_new_"
-    code = vt + " *ptr = (struct " + vt + " *) malloc(sizeof(struct " + cl + ") + sizeof(struct " + vt + ")); ptr->func = &func; return (struct " + ret.mname + " *)(ptr + sizeof(struct " + vt + "));"
-    new = dl + ret.mname + "(){" + code + "}"    
-    free = "void delete(struct " + cl + " *obj) { void *fr = (void*)(obj - sizeof(struct " + vt + ")); free(fr);}"
-    mal = parse.parse(new + "\n" + free)
-    ast.node.body.extend(mal.body)
+    vt = "vtable_" + cl    
+
+
+    free = "void delete() { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
+    d_free = parse.parse(free)
+    m_free = mangle(d_free.body[0], cl, "CM")
+    vlist[cl].append(m_free)
+    free = "void delete(struct " + cl + " *self) { void *fr = (void*)(self - sizeof(struct " + vt + ")); free(fr);}"
+    d_free = parse.parse(free)
+    d_free.body[0]._name = m_free["mangle"]
+    ast.node.body.append(d_free.body[0])
+
+
+    ptr_func = ""
+    for item in vlist[cl]:
+        ptr_func += "ptr->" + item["mangle"] + " = &" + item["mangle"] + ";"
+    dl = "struct " + cl + " *alloc"
+    code = vt + " *ptr = (struct " + vt + " *) malloc(sizeof(struct " + cl + ") + sizeof(struct " + vt + "));" \
+                + ptr_func + "return (struct " + cl + " *)(ptr + sizeof(struct " + vt + "));"
+    alloc = dl + "(){" + code + "}"    
+    d_alloc = parse.parse(alloc)
+    m_alloc = mangle(d_alloc.body[0], cl, "C")
+    clist[cl].append(m_alloc)
+    ast.node.body.append(d_alloc.body[0])
+
+    dn = "struct " + cl + " *new"
+    code = "struct " + cl + " *ptr = " + m_alloc["mangle"] + "(); return ptr;"
+    new = dn + "(){" + code + "}"    
+
+    d_new = parse.parse(new)
+    m_new = mangle(d_new.body[0], ret.mname, "C")
+    clist[cl].append(m_new)
+    ast.node.body.append(d_new.body[0])
+
     return True
 
 @meta.hook(Kooc)

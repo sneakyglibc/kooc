@@ -2,5 +2,5 @@
 
 int main()
 {
-   c = @!(char *)[testkooc func :0.5 :0.5];
+ t = @!(struct testkooc *)[testkooc new];
 }
