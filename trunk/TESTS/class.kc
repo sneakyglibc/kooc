@@ -1,0 +1,8 @@
+@import "class.kh"
+
+int	main()
+{
+	MyClass *a;
+
+	return (0);
+}

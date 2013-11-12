@@ -1,0 +1,46 @@
+@import "complexe.kh"
+
+@implementation MyModule
+{
+	int add(int a, int b)
+	{
+		return (a + b);
+	}
+
+	float add(float a, float b)
+	{
+		return (a + b);
+	}
+
+	int  *add(const char *a, const char *b)
+	{
+		return (a + b);
+	}
+}
+
+@implementation MyClass
+{
+/*
+	void toto(int a, int b);
+	{
+		printf("%d %d\n", a, b);
+	}
+*/
+
+/*
+	@member void toto(char *s)
+	{
+		printf("%s\n", s);
+	}
+*/
+}
+
+int	main()
+{
+	int c;
+
+ 	@!(int)[MyModule.result] = @!(int)[MyModule add :42 :21];
+	@!(int *)[MyModule.result] = @!(int *)[MyModule add :'toto' :'tata'];
+	@!(float)[MyModule.result] = @!(float)[MyModule add :42.21 :21.42];
+	return (0);
+}
