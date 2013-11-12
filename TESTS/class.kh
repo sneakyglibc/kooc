@@ -1,5 +1,6 @@
 @class			MyClass
 {
+/*
 	@member
 	{
 		int a;
@@ -16,4 +17,5 @@
 		int sub(int a, int b);
 		double sub(double a, double b);
 	}
+*/
 }
