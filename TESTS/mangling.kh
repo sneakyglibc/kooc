@@ -1,6 +1,6 @@
-@module MangleMoiCa
+@class MangleMoiCa
 {
-	int a;
+	@member int a;
 	float a;
 	char a;
 	char *a;
@@ -8,7 +8,7 @@
 	int *a;
 	int **a;
 
-	int func(int, char);
+	@member int func(int, char);
 	int func(int, char *);
 	int func(int *, char);
 	float **func(int **, float);
