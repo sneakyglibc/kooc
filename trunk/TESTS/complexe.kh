@@ -2,17 +2,14 @@
 {
 	int	result = 0;
 	float	result = 0.0;
-	int	*result = 0;
 
 	int	add(int, int);
 	float	add(float, float);
-	int	*add(const char *, const char *);
 }
 
 @class	MyClass
 {
 	@member int a;
-	@member void toto(char *);
 	float a;
 	void toto(int, int);
 
@@ -21,12 +18,10 @@
 		int lvl;
 		float lvl;
 		double lvl;
-		char *lvl;
 	}
 
 	@member
 	{
-		int aff(char *);
 		int aff(int);
 		int aff(float);
 		int aff(double);
