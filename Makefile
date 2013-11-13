@@ -4,6 +4,8 @@ KOOC_SRCS	=	test.kc			\
 
 SRCS		=	$(KOOC_SRCS:.kc=.c)
 
+all		: 	$(NAME)
+
 $(SRCS)		:	kooc $(KOOC_SRCS)
 
 koockies	:	
