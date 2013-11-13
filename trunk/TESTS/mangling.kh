@@ -1,6 +1,7 @@
 @class MangleMoiCa
 {
 	@member int a;
+	int a;
 	float a;
 	char a;
 	char *a;

@@ -2,8 +2,7 @@
 #include <stdio.h>
 @implementation testkooc
 {
-  @member
-  void *toto(double a, float b)
+   void *toto(double a, float b)
   {
   }
   int func(int a, char b)
@@ -18,9 +17,9 @@ int main()
  test = [testkooc new];
  int a = 5;
  char b;
- [test toto :0.5 :0.5];
+ /*[test func :5 :'a'];
  [testkooc func :a :b];	
  [testkooc func :5 :'5'];
- @!(int)[test.a] = 42;
- int t = [testkooc func :@!(int)[test.a] :'5'];
+ @!(int)[testkooc.w] = 42;
+ int t = [testkooc func :@!(int)[testkooc.w] :'5'];*/
 }
