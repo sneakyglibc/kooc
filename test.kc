@@ -1,19 +1,26 @@
 @import "module.kh"
-
+#include <stdio.h>
 @implementation testkooc
 {
   @member
-  void *toto(double, float)
+  void *toto(double a, float b)
   {
+  }
+  int func(int a, char b)
+  {
+	printf("%i", a);
   }
 }
 
 int main()
 {
  struct testkooc *test;
- int a;
+ test = [testkooc new];
+ int a = 5;
  char b;
+ [test toto :0.5 :0.5];
  [testkooc func :a :b];	
  [testkooc func :5 :'5'];
- t = [testkooc func :@!(int)[test.a] :'5'];
+ @!(int)[test.a] = 42;
+ int t = [testkooc func :@!(int)[test.a] :'5'];
 }

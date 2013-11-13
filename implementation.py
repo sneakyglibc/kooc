@@ -13,9 +13,13 @@ class   Implementation(Grammar, Declaration):
     grammar =   """
                 implementation ::=
                         ["@implementation" Base.id:n #is_imp(n) "{"
-                        ["@member" #is_member]?
-                        declaration*
-                        #not_member
+                        [
+                               [ [declaration |
+                                ["@member" #is_member declaration] |
+                                ["@member" "{" #is_member declaration* "}"]
+                                ]#not_member
+                               ]*
+                        ]
                 "}"] #not_imp
                 ;
                 """
@@ -30,15 +34,19 @@ def is_member(self):
 
 @meta.hook(Implementation)
 def not_member(self):
+    global implement, save
     implement["type"] = save
     return True
 
 @meta.hook(Implementation)
 def is_imp(self, name):
-    global implement
+    global implement, save
     from kooc import mlist, clist
+    global mlist
+    global clist
     if name.value in mlist:
         implement["type"] = "M"
+        save = "M"
     elif name.value in clist:
         implement["type"] = "C"
         save = "C"
