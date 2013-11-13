@@ -1,4 +1,4 @@
-@import "test_1.kh"
+@import "ModuleClass.kh"
 
 @implementation	Toto
 {
