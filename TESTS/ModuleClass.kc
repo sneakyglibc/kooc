@@ -1,0 +1,34 @@
+@import "test_1.kh"
+
+@implementation	Toto
+{
+	int Toto(int a, int b)
+	    {
+		return (a + b);
+	    }
+
+	float Toto(float a, float b)
+	      {
+		return (a + b);
+	      }
+}
+
+@implementation Class
+{
+	@member int	Toto(int a)
+	{
+		printf("%d\n", a);
+	}
+}
+
+int		main()
+{
+	int	c;
+	struct Class *d = [Class new];
+
+	[d Toto :42];
+	@!(int)[Toto.Toto] = @!(int)[Toto Toto :5 :6];
+	@!(int)[Toto.Toto] = @!(float)[Toto Toto :5.5 :6.5];
+
+	return (0);
+}

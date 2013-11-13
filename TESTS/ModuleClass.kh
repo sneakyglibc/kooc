@@ -1,0 +1,14 @@
+@module		Toto
+{
+	int	Toto = 0;
+	float	Toto = 0.0;
+	int	*Toto = 0;
+
+	int	Toto(int, int);
+	float	Toto(float, float);	
+}
+
+@class		Class
+{
+	@member int Toto(int);
+}
