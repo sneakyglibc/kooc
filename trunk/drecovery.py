@@ -63,10 +63,16 @@ def new_scope(self):
     global scope
     global isscope
     global decl
+    from mangle import mangle
+    from implementation import implement
     isscope = True
     scope = decl
     if not hasattr(glist, scope):
         glist[scope] = []
+    if implement["type"] == "CM":
+        parse = Declaration()
+        nod = parse.parse("struct " + implement["name"] + " * self;");
+        glist[scope].append(mangle(nod.body[0], "nonename", "M"))
     return True
 
 @meta.hook(Drecovery)
@@ -88,9 +94,7 @@ def new_dcl(self, decl):
         if implement["type"] == "CM":
             parse = Declaration()
             nod = parse.parse("struct " + implement["name"] + " * self;");
-            decl.node._ctype._params.append(nod.body[0])
-            tmp = deepcopy(nod.body[0])
-            glist[scope].append(mangle(tmp, "nonename", "M"))
+            decl.node._ctype._params.append(nod.body[0])            
             test = vlist
         found = False
         for item in test[implement["name"]]:
