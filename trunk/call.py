@@ -71,11 +71,13 @@ def resolve(name, cur_scope):
 
 @meta.hook(Call)
 def mangle_func(self, call, spe, mod, var, params):
-    from kooc import mlist, clist
+    from kooc import mlist, clist, glist, vlist
+    from drecovery import scope
     from listToStr import listToListStr
-    global mlist, clist
+    global mlist, clist, glist, scope, vlist
     scope_list = []
     type_object = ""
+    ptr = ""
     if mod.value in mlist:
         scope_list = mlist
         type_object = "M"
@@ -83,8 +85,19 @@ def mangle_func(self, call, spe, mod, var, params):
         scope_list = clist
         type_object = "C"
     else:
-        print_error("error no module called : " + mod.value)
-        return False
+        tmp = None
+        for item in glist[scope]:
+            if item["name"] == mod.value and len(item["type"]) > 3 and item["type"][:3] == "2Sp":
+                if item["type"][3:] in clist:
+                    tmp = item
+                    break
+        if tmp == None:
+            print_error("error no module called : " + mod.value)
+            return False
+        scope_list = vlist
+        ptr = mod.value + "->"
+        mod.value = tmp["type"][3:]
+        type_object = "CM"
     cparse = Declaration()
     list_params = []
     all_params = [""]
@@ -103,11 +116,11 @@ def mangle_func(self, call, spe, mod, var, params):
     for item in all_params:
         if spe.value == "":
             m = mangle_func_from(mod.value, type_object, var.value, None, item)
-            res = func_algo(call, mod, var, m, scope_list)
+            res = func_algo(call, mod, var, m, scope_list, ptr)
         else:
             ast = cparse.parse(spe.value + " " + var.value + "()" ";")
             m = mangle_func_from(mod.value, type_object, var.value, ast.body[0], item)
-            res = func_algo_spe(call, mod, var, m, scope_list)
+            res = func_algo_spe(call, mod, var, m, scope_list, ptr)
         if res == True and found == True:
             print_error("ambiguous function : " + mod.value + " " + var.value)
             return False
@@ -118,17 +131,17 @@ def mangle_func(self, call, spe, mod, var, params):
         return False
     return True
 
-def func_algo_spe(call, mod, var, mangle, scope_list):
+def func_algo_spe(call, mod, var, mangle, scope_list, ptr):
     result = []
     for item in scope_list[mod.value]:
         if item["mangle"] == mangle:
             result.append(mangle)
     if len(result) == 1:
-        call.value = result[0]
+        call.value = ptr + result[0]
         return True
     return False
 
-def func_algo(call, mod, var, mangle, scope_list):
+def func_algo(call, mod, var, mangle, scope_list, ptr):
     result = []
     for item in scope_list[mod.value]:
         test = item["mangle"].split("_")[5:]
@@ -136,7 +149,7 @@ def func_algo(call, mod, var, mangle, scope_list):
         if test == mangle:
             result.append(item["mangle"])
     if len(result) == 1:
-        call.value = result[0]
+        call.value = ptr + result[0]
         return True
     return False
 

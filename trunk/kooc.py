@@ -62,7 +62,7 @@ def add_imp(self, ast, ret):
         print_error("Error module or class not declared : " + ret.mname)
         return False
     for item in ret.node.body:
-        mangle.mangle(item, ret.mname, ttype)
+        mangle(item, ret.mname, ttype)
     ast.node.body.extend(ret.node.body)
     return True
 
@@ -166,7 +166,7 @@ def add_module(self, ast, ret):
     if not ret.mname in mlist:
         mlist[ret.mname] = []
     for item in ret.node.body:
-        mlist[ret.mname].append(mangle.mangle(item, ret.mname, "M"))
+        mlist[ret.mname].append(mangle(item, ret.mname, "M"))
     ast.node.body.extend(ret.node.body)
     return True
 
