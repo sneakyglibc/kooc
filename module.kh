@@ -1,11 +1,8 @@
 
 @class testkooc
 { 
- @member {
- int a;
+ int w;
  int b;
-}
- @member
- void *toto(double, float);
  int func(int, char);
+ void *toto(double, float);
 }

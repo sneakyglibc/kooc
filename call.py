@@ -125,7 +125,7 @@ def mangle_func(self, call, spe, mod, var, params):
             m = mangle_func_from(mod.value, type_object, var.value, ast.body[0], item)
             res = func_algo_spe(call, mod, var, m, scope_list, ptr)
         if res == True and found == True:
-            print_error("ambiguous function : " + mod.value + " " + var.value)
+            print_error("ambiguious function : " + mod.value + " " + var.value)
             return False
         if res == True:
             found = True
@@ -143,7 +143,7 @@ def func_algo_spe(call, mod, var, mangle, scope_list, ptr):
     for item in scope_list[mod.value]:
         if item["mangle"] == mangle:
             result.append(mangle)
-    if len(result) == 1:
+    if len(result) >= 1:
         call.value = ptr + result[0]
         return True
     return False
@@ -155,7 +155,7 @@ def func_algo(call, mod, var, mangle, scope_list, ptr):
         test = "_" + "_".join(test)
         if test == mangle:
             result.append(item["mangle"])
-    if len(result) == 1:
+    if len(result) >= 1:
         call.value = ptr + result[0]
         return True
     return False

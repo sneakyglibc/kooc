@@ -89,6 +89,8 @@ def new_dcl(self, decl):
             parse = Declaration()
             nod = parse.parse("struct " + implement["name"] + " * self;");
             decl.node._ctype._params.append(nod.body[0])
+            tmp = deepcopy(nod.body[0])
+            glist[scope].append(mangle(tmp, "nonename", "M"))
             test = vlist
         found = False
         for item in test[implement["name"]]:
