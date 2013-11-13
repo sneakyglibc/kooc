@@ -14,7 +14,8 @@ koockies	:
 $(NAME)		:	koockies
 			gcc $(SRCS) -o $(NAME)
 
-clean		:	rm -rf $(NAME)
+clean		:	
+			rm -rf $(NAME)
 
 fclean		:	clean
 			rm -rf $(SRCS)
