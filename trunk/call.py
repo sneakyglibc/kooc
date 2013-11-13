@@ -3,6 +3,7 @@ from pyrser import meta, directives
 from cnorm.parsing.declaration import Declaration
 from mangle import mangle, mangle_func_from
 from print_error import print_error
+from cnorm import nodes
 
 class   Call(Grammar):
 
@@ -78,6 +79,7 @@ def mangle_func(self, call, spe, mod, var, params):
     scope_list = []
     type_object = ""
     ptr = ""
+    nnname = ""
     if mod.value in mlist:
         scope_list = mlist
         type_object = "M"
@@ -95,7 +97,8 @@ def mangle_func(self, call, spe, mod, var, params):
             print_error("error no module called : " + mod.value)
             return False
         scope_list = vlist
-        ptr = mod.value + "->"
+        ptr = "(((struct vtable_" + tmp["type"][3:] + " *)" + mod.value + ")-1)->"
+        nnname = mod.value
         mod.value = tmp["type"][3:]
         type_object = "CM"
     cparse = Declaration()
@@ -129,6 +132,10 @@ def mangle_func(self, call, spe, mod, var, params):
     if found == False:
         print_error("Don't found function : " + mod.value + " " + var.value)
         return False
+    if not hasattr(params, "node"):
+        params.node = []
+    if nnname != "":
+        params.node.append(nodes.Id(nnname))
     return True
 
 def func_algo_spe(call, mod, var, mangle, scope_list, ptr):
