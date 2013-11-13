@@ -3,15 +3,17 @@
 
 @implementation MangleMoiCa
 {
-	int func(int a, char c)
+@member	int func(int a, char c)
 	{
-	  @!(int)[MangleMoiCa.a] = a;
+	  @!(int)[self.a] = a;
 	  return (a);
 	}
 }
 
 int	main()
 {
-	[MangleMoiCa func :12 :'c'];
+	struct MangleMoiCa *machin = [MangleMoiCa new];
+
+	@!(int)[machin func :12 :'c'];
 	return (0);
 }
